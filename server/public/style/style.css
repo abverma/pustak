@@ -1,0 +1,147 @@
+body {
+	background: #111;
+	color: #fff;
+}
+
+h1 {
+	text-align: center;
+}
+
+.main {
+  	padding: 10px;
+  	border: 1px solid orange;
+}
+
+.searchbox {
+	margin: auto;
+	width: 60vw;
+  	padding: 10px;
+  	border: 1px solid red;
+}
+
+.result {
+	margin: auto;
+	width: 60vw;
+  	padding: 10px;
+	border: 1px solid #222;
+}
+
+.bigsearch {
+	display: block;
+	max-width: 90%;
+	width: 90%;
+	border: 1px solid orange;
+	border-radius: 5px;
+	font-size: 20px;
+	padding: 10px;
+	margin: 10px auto;
+}
+
+.searchBtn {
+	display: block;
+	margin: auto;
+	width: 20%;	
+	height: 40px;
+	border-radius: 5px;
+	font-size: 20px;
+	background: #3bc33b;	
+	border: 0;
+	cursor: pointer;
+}
+
+.book {
+	margin: 10px 0;
+	padding: 10px 0;
+	line-height: .3;
+}
+
+.flash {
+	text-align: center;
+}
+
+.success {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
+form {
+	padding: 20px;
+	text-align: center;
+	border: 1px solid #222;
+}
+
+a {
+	color: #74ccf4;
+}
+
+form > input {
+	display: block;
+	margin: 10px auto;
+	padding: 10px;
+	font-size: 18px;
+	border-radius: 2px;
+	border: none;
+}
+
+form > input[type="submit"] {
+	background: #fff;
+	border: none;
+}
+/* Removes the clear button from date inputs */
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+
+/* Removes the spin button */
+input[type="date"]::-webkit-inner-spin-button { 
+    display: none;
+}
+
+/* Always display the drop down caret */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: #000;
+    background: #fff;
+}
+
+input[type="date"]::-moz-calendar-picker-indicator {
+    color: #000;
+    background: #fff;
+}
+
+/* A few custom styles for date inputs */
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    color: #000;
+    font-family: "Montserrat", arial, sans-serif;
+    font-size: 16px;
+    border:1px solid #111;
+    border-radius: 2px;
+    background:#fff;
+    padding:5px;
+    display: block !important;
+    visibility: visible !important;
+    margin: 10px auto;
+}
+
+input[type="date"], focus {
+    color: #000;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+@media only screen and (min-width: 768px) {
+
+	body {
+		padding: 10px 30px;
+	}
+	
+	form {
+		width: 30vw;
+		margin: auto;
+	}
+}
