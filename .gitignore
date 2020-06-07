@@ -1,2 +1,6 @@
 server/node_modules
 server/.env
+server/stdeff.log
+server/stdout.log
+stderr.log
+stdout.log

@@ -68,8 +68,4 @@ exports.close = () => {
 		})
 }
 
-exports.findBooks = (query, userId) => {
-	query['user_id'] = ObjectID(userId)
 
-	return db.collection('books').find(query).limit(10).toArray()
-}
