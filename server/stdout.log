@@ -1,42 +1,4 @@
-[Sun, 07 Jun 2020 12:41:04 GMT] Server started
+[Sun, 07 Jun 2020 16:18:14 GMT] Server started
 Server listening at 3000
 Connecting to db
 Connection successful!
-[Sun, 07 Jun 2020 12:41:09 GMT] GET / http
-[Sun, 07 Jun 2020 12:41:11 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:41:11 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:41:12 GMT] GET /books http
-[Sun, 07 Jun 2020 12:41:12 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:41:59 GMT] GET / http
-[Sun, 07 Jun 2020 12:41:59 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:41:59 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:42:00 GMT] GET /books http
-[Sun, 07 Jun 2020 12:42:00 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:42:36 GMT] GET / http
-[Sun, 07 Jun 2020 12:42:37 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:42:37 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:42:37 GMT] GET /books http
-[Sun, 07 Jun 2020 12:42:37 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:43:23 GMT] GET / http
-[Sun, 07 Jun 2020 12:43:23 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:43:23 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:43:24 GMT] GET /books http
-[Sun, 07 Jun 2020 12:43:24 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:43:34 GMT] GET / http
-[Sun, 07 Jun 2020 12:43:35 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:43:35 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:43:35 GMT] GET /books http
-[Sun, 07 Jun 2020 12:43:35 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:44:11 GMT] GET / http
-[Sun, 07 Jun 2020 12:44:12 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:44:12 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:44:12 GMT] GET /books http
-[Sun, 07 Jun 2020 12:44:12 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:44:48 GMT] GET / http
-[Sun, 07 Jun 2020 12:44:49 GMT] GET /style/style.css http
-[Sun, 07 Jun 2020 12:44:49 GMT] GET /js/app.js http
-[Sun, 07 Jun 2020 12:44:49 GMT] GET /books http
-[Sun, 07 Jun 2020 12:44:49 GMT] GET /books/lists http
-[Sun, 07 Jun 2020 12:44:57 GMT] GET /logout http
-[Sun, 07 Jun 2020 12:44:58 GMT] GET /login http
-[Sun, 07 Jun 2020 12:44:58 GMT] GET /style/template.css http

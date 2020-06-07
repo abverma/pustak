@@ -44,3 +44,20 @@ exports.findLists = (query, start, limit) => {
 
 	return db.collection('lists').find(query).skip(start).limit(limit).toArray()
 }
+
+exports.getCount = (query) => {
+	let match = { 
+		user_id:  ObjectID(query.user_id)
+	}
+
+	if (query && query.hasOwnProperty('title') && query.title) {
+		match['$text'] = { 
+			'$search': '\"'+query.title+'\"' 
+		}
+	}
+
+	if (query && query.hasOwnProperty('list') && query.list) {
+		match['list'] = query.list
+	}
+	return db.collection('books').countDocuments(match)
+}

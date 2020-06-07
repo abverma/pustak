@@ -14,11 +14,15 @@ router.get('/', (req, res) => {
 
 	delete filter.start
 	delete filter.limit
-	Books.findBooks(filter, start, limit)
+	const books = Books.findBooks(filter, start, limit)
+	const count = Books.getCount(filter)
+
+	Promise.all([books, count])
 		.then((result) => {
 			res.status(200).json({
 				success: true,
-				data: result
+				data: result[0],
+				count: result[1]
 			})
 		})
 		.catch((err) => {

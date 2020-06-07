@@ -39,6 +39,7 @@ body {
 .main {
   	padding: 10px;
 	float: left;
+	width: 50vw;
 }
 
 .left a {
@@ -49,15 +50,19 @@ a:hover {
 }
 
 .searchbox {
+	display: flex;
+	flex-direction: row;
   	padding: 5px;
-  	display: inline-block;
-	width: 100%;
+  	justify-content: space-between;
 }
 
+.searchbox button {
+	margin: 0 5px;
+}
 
 .bigsearch {
 	padding: 5px;
-	width: 80%;
+	flex-grow: 3;
 }
 
 /*
@@ -75,13 +80,24 @@ a:hover {
 
 .result {
   	padding: 10px;
-  	width: 100%;
 }
 
 .book {
 	margin: 10px 0;
 	padding: 10px 0;
   	width: 100%;
+  	white-space: normal;
+}
+
+.paging {
+	margin: 0 10px 0 0;
+}
+
+.previous, .next {
+	float: right;
+}
+.book-title {
+	font-weight: bold;
 }
 
 #lists {

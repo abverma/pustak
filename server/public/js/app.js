@@ -1,8 +1,19 @@
 const input = document.querySelector("#searchtext")
-const btn = document.querySelector("#searchbtn")
+const searchbtn = document.querySelector("#searchbtn")
+const reset = document.querySelector("#resetbtn")
+const total = document.querySelector("#total")
 
 input.addEventListener('input', inputHandler)
-btn.addEventListener('click', btnHandler)
+input.addEventListener('keyup', (event) => {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		btnHandler()
+	}
+})
+searchbtn.addEventListener('click', btnHandler)
+reset.addEventListener('click', (v) => {
+	input.value = ''
+})
 
 class Book {
 	name = '';
@@ -74,7 +85,8 @@ class Store {
 		 else {
 			let url = this.proxy.url + '?start=0&limit=25',
 			method = this.proxy.method || 'GET',
-			rootProperty = this.proxy.rootProperty
+			rootProperty = this.proxy.rootProperty,
+			totalProperty = this.proxy.totalProperty
 
 			let urlparams = new URLSearchParams(params).toString()
 			
@@ -88,7 +100,7 @@ class Store {
 				})
 				.then((jsonResponse) => {
 					this.data = jsonResponse[rootProperty]
-					callback(null, jsonResponse[rootProperty])
+					callback(null, jsonResponse[rootProperty], jsonResponse[totalProperty])
 				})
 				.catch((err) => {
 					callback(err)
@@ -126,22 +138,24 @@ function start() {
 	console.log('Load')
 	bookStore = new Store(book, {
 		url: '/books',
-		rootProperty: 'data'
+		rootProperty: 'data',
+		totalProperty: 'count'
 	})
 	listStore = new Store(list, {
 		url: 'books/lists',
-		rootProperty: 'data'
+		rootProperty: 'data',
+		totalProperty: 'count'
 	})
 	btnHandler()
 }
 
 function inputHandler(v) {
 	if (v.target.value) {
-		btn.disabled = false
-		btn.style.color = '#111'
+		searchbtn.disabled = false
+		searchbtn.style.color = '#111'
 	} else {
-		btn.disabled = true
-		btn.style.color = 'rgba(0, 0, 0, 0.247)'
+		searchbtn.disabled = true
+		searchbtn.style.color = 'rgba(0, 0, 0, 0.247)'
 	}
 }
 
@@ -158,9 +172,15 @@ function btnHandler(v) {
 	listStore.load({}, listStoreLoadHandler)
 }
 
-function bookStoreLoadHandler (err, data)  {
+function bookStoreLoadHandler (err, data, count)  {
 	if (err) {
 		console.log(err)
+	}
+
+	if (data) {
+		total.innerHTML = data.length + ' of ' + count
+	} else {
+		total.innerHTM = ''
 	}
 	fillBookData(data)
 }
@@ -210,6 +230,7 @@ function fillListData(data) {
 	  	listElem.appendChild(tmpl)
 	})
 }
+
 
 
 
