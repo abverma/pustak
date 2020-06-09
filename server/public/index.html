@@ -11,23 +11,28 @@
 			<li style="float: right;"><a href="/logout">Logout</a></li>
 		</ul>
 	</div>
-	<div class="left">
+	<div class="content">
+		<div class="left">
 			<h3>Lists</h3>
-			<div id="lists"></div>
-	</div>
-	<div class="main">
-		
-		<div class="searchbox">
-			<input id="searchtext" type="text" name="search" class="bigsearch" placeholder="Search your books">
-			<button id="searchbtn" class="searchBtn" disabled=true>Search</button>
-			<button id="resetbtn" class="searchBtn">Reset</button>
+			<div id="lists" class="lists"></div>
 		</div>
+		<div class="main">
+			
+			<div class="searchbox">
+				<input id="searchtext" type="text" name="search" class="bigsearch" placeholder="Search your books">
+				<button id="searchbtn" class="disabled" disabled=true>Search</button>
+				<button id="resetbtn" class="searchBtn">Reset</button>
+			</div>
 
-		<div class="result">
-			<p><span id="total" class="paging"></span> <span class="paging previous">Prev</span><span class="paging next">Next</span></p>
-			<div id="result"></div>
+			<div class="result">
+				<p><span id="total" class="paging"></span> <span class="paging previous">Prev</span><span class="paging next">Next</span></p>
+				<div class="loader">
+				</div>
+				<div id="result"></div>
+			</div>
 		</div>
 	</div>
+	
 	<template id="book-template">
 		<div id="book" class="book">
 			<p class="book-title"></p>
@@ -40,6 +45,7 @@
 			<a href="#"id="list-name"></a>
 		</div>
 	</template>
+	<footer>&copy; 2020-2021 Abhishek Verma</footer>
 	<script src="js/app.js"></script>
 </body>
 </html>

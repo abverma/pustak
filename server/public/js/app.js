@@ -2,9 +2,14 @@ const input = document.querySelector("#searchtext")
 const searchbtn = document.querySelector("#searchbtn")
 const reset = document.querySelector("#resetbtn")
 const total = document.querySelector("#total")
+const resultElem = document.querySelector('#result')
+const loader = document.querySelector('.loader')
+
+let slide = false;
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
+	//detect enter key up 
 	if (event.keyCode === 13) {
 		event.preventDefault();
 		btnHandler()
@@ -13,6 +18,10 @@ input.addEventListener('keyup', (event) => {
 searchbtn.addEventListener('click', btnHandler)
 reset.addEventListener('click', (v) => {
 	input.value = ''
+	searchbtn.classList.remove('searchBtn')
+	searchbtn.classList.add('disabled')
+	searchbtn.disabled = true
+	btnHandler()
 })
 
 class Book {
@@ -112,11 +121,9 @@ class Store {
 	getData() {
 		return this.data
 	}
-
-
 }
 
-book = new Book('book', [{
+const book = new Book('book', [{
 	'name': 'title'
 }, {
 	'name': 'author'
@@ -126,16 +133,17 @@ book = new Book('book', [{
 	'name': 'average_rating'
 }])
 
-list = new List('list', [{
+const list = new List('list', [{
 	'name': 'list'
 }])
 
-let bookStore 
+let bookStore, listStore
 
 document.onload = start()
 
 function start() {
-	console.log('Load')
+	console.log('Document load')
+	slide = true
 	bookStore = new Store(book, {
 		url: '/books',
 		rootProperty: 'data',
@@ -152,23 +160,33 @@ function start() {
 function inputHandler(v) {
 	if (v.target.value) {
 		searchbtn.disabled = false
-		searchbtn.style.color = '#111'
+		searchbtn.classList.remove('disabled')
+		searchbtn.classList.add('searchBtn')
 	} else {
 		searchbtn.disabled = true
-		searchbtn.style.color = 'rgba(0, 0, 0, 0.247)'
+		searchbtn.classList.remove('searchBtn')
+		searchbtn.classList.add('disabled')
 	}
 }
 
-function btnHandler(v) {
+function btnHandler(v, param) {
 	console.log('store load')
-	let param = {}
+	console.log(slide)
+
+	if (!param) {
+		param = {}
+	}
 
 	if (input.value) {
 		param['title'] = input.value
 	}
 
-	bookStore.load(param, bookStoreLoadHandler)
+	resultElem.classList.remove('slidefocus')
+	resultElem.classList.remove('focus')
 
+	resultElem.style.display = 'none'
+	loader.style.display = 'block'
+	bookStore.load(param, bookStoreLoadHandler)
 	listStore.load({}, listStoreLoadHandler)
 }
 
@@ -182,7 +200,21 @@ function bookStoreLoadHandler (err, data, count)  {
 	} else {
 		total.innerHTM = ''
 	}
+
 	fillBookData(data)
+
+	// resultElem.classList.remove('loader')
+	resultElem.style.display = 'block'
+	loader.style.display = 'none'
+
+
+	if (slide) {
+		resultElem.classList.add('slidefocus')
+	} else {
+		resultElem.classList.add('focus')
+	}
+
+	slide = false
 }
 
 function listStoreLoadHandler (err, data)  {
@@ -194,13 +226,12 @@ function listStoreLoadHandler (err, data)  {
 
 function listclick(e) {
 	let value = e.attributes.value.value
-	bookStore.load({
+	btnHandler(null, {
 		list: value
-	}, bookStoreLoadHandler)
+	})
 }
 
 function fillBookData(data) {
-	let resultElem = document.getElementById('result')
 
 	//clear existing list before repopulating
 	resultElem.textContent = ''
