@@ -21,9 +21,12 @@
 			<div class="searchbox">
 				<input id="searchtext" type="text" name="search" class="bigsearch" placeholder="Search your books">
 				<button id="searchbtn" class="disabled" disabled=true>Search</button>
-				<button id="resetbtn" class="searchBtn">Reset</button>
+				<button id="resetbtn" class="searchBtn">Reset</button>	
 			</div>
-
+			<div class="goodreads">
+				<input id="checkbox" type="checkbox" name="goodreads">
+				<label for="goodreads">Search on goodreads.com</label>
+			</div>
 			<div class="result">
 				<p><span id="total" class="paging"></span> <span class="paging previous">Prev</span><span class="paging next">Next</span></p>
 				<div class="loader">
@@ -37,7 +40,17 @@
 		<div id="book" class="book">
 			<p class="book-title"></p>
 			<p>Author - <span class="book-author"></span></p>
+			<p>List - <span class="book-list"></span></p>
 			<p>Rating - <span class="book-average-rating"></span></p>
+
+			<div class="actions">
+				<ul>
+					<li>Add</li>
+					<li>Mark as Read</li>
+					<li>Mark as Want To Read</li>
+					<li>Mark as Currently Reading</li>
+				</ul>
+			</div>
 		</div>
 	</template>
 	<template id="list-template">

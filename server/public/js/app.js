@@ -4,7 +4,9 @@ const reset = document.querySelector("#resetbtn")
 const total = document.querySelector("#total")
 const resultElem = document.querySelector('#result')
 const loader = document.querySelector('.loader')
-
+const checkbox = document.querySelector('#checkbox')
+const localBooksUrl = '/books'
+const booksUrl = '/books/search'
 let slide = false;
 
 input.addEventListener('input', inputHandler)
@@ -143,12 +145,21 @@ document.onload = start()
 
 function start() {
 	console.log('Document load')
+
 	slide = true
+
 	bookStore = new Store(book, {
-		url: '/books',
+		url: localBooksUrl,
 		rootProperty: 'data',
 		totalProperty: 'count'
 	})
+
+	onlineBookStore = new Store(book, {
+		url: booksUrl,
+		rootProperty: 'data',
+		totalProperty: 'count'
+	})
+
 	listStore = new Store(list, {
 		url: 'books/lists',
 		rootProperty: 'data',
@@ -186,7 +197,13 @@ function btnHandler(v, param) {
 
 	resultElem.style.display = 'none'
 	loader.style.display = 'block'
-	bookStore.load(param, bookStoreLoadHandler)
+
+	if (checkbox.checked) {
+		onlineBookStore.load(param, bookStoreLoadHandler)
+	} else {
+		bookStore.load(param, bookStoreLoadHandler)
+	}
+
 	listStore.load({}, listStoreLoadHandler)
 }
 
@@ -239,6 +256,7 @@ function fillBookData(data) {
 	data.forEach((el) => {
 		var tmpl = document.getElementById('book-template').content.cloneNode(true)
 		tmpl.querySelector('.book-title').innerText = el.title
+	  	tmpl.querySelector('.book-list').innerText = el.list ? el.list : ''
 	  	tmpl.querySelector('.book-author').innerText = el.author
 	  	tmpl.querySelector('.book-average-rating').innerText = el.average_rating
 

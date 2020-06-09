@@ -36,10 +36,10 @@ body {
 	border-bottom: 1px solid #fff;
 }
 
-.nav li {
+.nav li, .actions li {
 	display: inline-block;
 	list-style: none;
-	margin: 5px 10px;
+	margin: 5px 10px 5px 0;
 }
 
 .nav a {
@@ -66,9 +66,9 @@ body {
 	flex-grow: 1;
 }
 
-.left h3 {
+/*.left h3 {
 	text-align: center;
-}
+}*/
 
 .main {
 	margin: 5px;
@@ -100,7 +100,15 @@ a:hover {
 	display: flex;
 	flex-direction: row;
   	padding: 5px;
-  	justify-content: space-between;
+  	flex-wrap: wrap;
+}
+
+.goodreads {
+	margin: 5px;
+}
+
+.goodreads input {
+	margin: 5px;
 }
 
 .searchBtn {
@@ -114,7 +122,7 @@ a:hover {
 }
 
 .searchBtn:hover {
-	background: teal; /*rgb(76, 175, 80);*/
+	background: teal; /*rgb(76, 175, 80);*/	
 }
 
 .bigsearch {
