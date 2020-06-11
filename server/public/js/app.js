@@ -7,7 +7,7 @@ const loader = document.querySelector('.loader')
 const checkbox = document.querySelector('#checkbox')
 const localBooksUrl = '/books'
 const booksUrl = '/books/search'
-let slide = false;
+let slide = false
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
@@ -165,6 +165,7 @@ function start() {
 		rootProperty: 'data',
 		totalProperty: 'count'
 	})
+	
 	btnHandler()
 }
 
