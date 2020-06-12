@@ -13,17 +13,21 @@ input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
 	//detect enter key up 
 	if (event.keyCode === 13) {
-		event.preventDefault();
+		event.preventDefault()
 		btnHandler()
 	}
 })
 searchbtn.addEventListener('click', btnHandler)
 reset.addEventListener('click', (v) => {
-	input.value = ''
-	searchbtn.classList.remove('searchBtn')
-	searchbtn.classList.add('disabled')
-	searchbtn.disabled = true
-	btnHandler()
+
+	if (input.value) {
+		input.value = ''
+		searchbtn.classList.remove('searchBtn')
+		searchbtn.classList.add('disabled')
+		searchbtn.disabled = true
+		btnHandler()
+	}
+	
 })
 
 class Book {
@@ -80,6 +84,7 @@ class List {
 
 class Store {
 	data = [];
+	currentPage = 1;
 	constructor(model, proxy) {
 		if (!model || !proxy) {
 			throw Error('Incomplete store definition')
@@ -88,18 +93,26 @@ class Store {
 		this.proxy = proxy
 	}
 
-	load(params, callback) {
+	load(options) {
 		
+		let {params, callback, page=1} = options
+
 		if (!callback){
 			throw Error('Callback function required for function load.')
 		}
 		 else {
-			let url = this.proxy.url + '?start=0&limit=25',
+		 	let start = params ? 0 : (this.currentPage - 1)*25
+		 	
+			let url = this.proxy.url + '?start=' + start + '&limit=25',
 			method = this.proxy.method || 'GET',
 			rootProperty = this.proxy.rootProperty,
 			totalProperty = this.proxy.totalProperty
 
-			let urlparams = new URLSearchParams(params).toString()
+			if (params) {
+				this.params = params
+			}
+
+			let urlparams = new URLSearchParams(this.params).toString()
 			
 			if (urlparams) {
 				url += '&' + urlparams
@@ -111,13 +124,28 @@ class Store {
 				})
 				.then((jsonResponse) => {
 					this.data = jsonResponse[rootProperty]
-					callback(null, jsonResponse[rootProperty], jsonResponse[totalProperty])
+					this.currentPage = page
+					callback(null, jsonResponse[rootProperty], jsonResponse[totalProperty], this.currentPage)
 				})
 				.catch((err) => {
 					callback(err)
 				})
 		}
 		
+	}
+
+	loadNextPage(callback) {
+		this.load({
+			callback,
+			page: ++this.currentPage
+		})
+	}
+
+	loadPreviousPage(callback) {
+		this.load({
+			callback,
+			page: --this.currentPage
+		})
 	}
 
 	getData() {
@@ -165,7 +193,12 @@ function start() {
 		rootProperty: 'data',
 		totalProperty: 'count'
 	})
-	
+
+	listStore.load({
+		params: {}, 
+		callback: listStoreLoadHandler
+	})
+
 	btnHandler()
 }
 
@@ -181,17 +214,21 @@ function inputHandler(v) {
 	}
 }
 
-function btnHandler(v, param) {
-	console.log('store load')
-	console.log(slide)
+function btnHandler(v, params, nextPage = false, previousPage = false) {
 
-	if (!param) {
-		param = {}
+	let options = {
+		callback: bookStoreLoadHandler
 	}
 
-	if (input.value) {
-		param['title'] = input.value
+	if (!params && (!nextPage || !previousPage)) {
+		params = {}
 	}
+
+	if (params && input.value) {
+		params['title'] = input.value
+	}
+
+	options.params = params
 
 	resultElem.classList.remove('slidefocus')
 	resultElem.classList.remove('focus')
@@ -200,31 +237,84 @@ function btnHandler(v, param) {
 	loader.style.display = 'block'
 
 	if (checkbox.checked) {
-		onlineBookStore.load(param, bookStoreLoadHandler)
+		onlineBookStore.load(options)
 	} else {
-		bookStore.load(param, bookStoreLoadHandler)
+		if (nextPage) {
+			bookStore.loadNextPage(options.callback)
+		} else if (previousPage) {
+			bookStore.loadPreviousPage(options.callback)
+		} else {
+			bookStore.load(options)
+		}
 	}
-
-	listStore.load({}, listStoreLoadHandler)
 }
 
-function bookStoreLoadHandler (err, data, count)  {
+function disableAnchorListner(event) {
+	event.preventDefault()
+}
+
+function loadNextPage(event) {
+	event.preventDefault()
+	btnHandler(null, null, true)
+}
+
+function loadPreviousPage(event) {
+	event.preventDefault()
+	btnHandler(null, null, false, true)
+}
+
+function disableAnchor(anchor, flag = true) {
+	if (flag) {
+		anchor.classList.add('disabledAnchor')
+		anchor.addEventListener('click', disableAnchorListner)
+	} else {
+		anchor.classList.remove('disabledAnchor')
+		anchor.removeEventListener('click', disableAnchorListner)
+	}
+}
+
+function bookStoreLoadHandler (err, data, count, currentPage)  {
 	if (err) {
 		console.log(err)
 	}
 
+	let previous = document.querySelector('.previous')
+	let next = document.querySelector('.next')
+
 	if (data) {
-		total.innerHTML = data.length + ' of ' + count
+		if (data.length == 0) {
+			total.innerHTML = 'No books found'
+			
+			disableAnchor(previous)
+			disableAnchor(next)
+
+		} else {
+			total.innerHTML = (((currentPage - 1) * 25) + 1) + ' - ' + (((currentPage - 1) * 25) + data.length) + ' of ' + count + ' books'
+
+			if (data.length + (currentPage - 1) * 25 == count ) {
+				disableAnchor(next)
+				next.removeEventListener('click', loadNextPage)
+			} else {
+				disableAnchor(next, false)
+				next.addEventListener('click', loadNextPage)
+			}
+
+			if (currentPage == 1) {
+				disableAnchor(previous)
+				previous.removeEventListener('click', loadPreviousPage)
+			} else {
+				disableAnchor(previous, false)
+				previous.addEventListener('click', loadPreviousPage)
+			}
+		}
 	} else {
-		total.innerHTM = ''
+		total.innerHTML = ''
 	}
 
 	fillBookData(data)
 
-	// resultElem.classList.remove('loader')
 	resultElem.style.display = 'block'
 	loader.style.display = 'none'
-
 
 	if (slide) {
 		resultElem.classList.add('slidefocus')
