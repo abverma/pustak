@@ -72,17 +72,7 @@ input.addEventListener('keyup', (event) => {
 	}
 })
 searchbtn.addEventListener('click', btnHandler)
-reset.addEventListener('click', (v) => {
-
-	if (input.value) {
-		input.value = ''
-		searchbtn.classList.remove('searchBtn')
-		searchbtn.classList.add('disabled')
-		searchbtn.disabled = true
-		loadPage()
-	}
-	
-})
+reset.addEventListener('click', resetHandler)
 
 const book = new Book('book', [{
 	'name': 'title'
@@ -141,6 +131,20 @@ function inputHandler(v) {
 		searchbtn.classList.remove('searchBtn')
 		searchbtn.classList.add('disabled')
 	}
+}
+
+function resetHandler(v) {
+	if (input.value) {
+		input.value = ''
+		resetPage()
+	}
+}
+
+function resetPage(v) {
+	searchbtn.classList.remove('searchBtn')
+	searchbtn.classList.add('disabled')
+	searchbtn.disabled = true
+	loadPage()
 }
 
 function btnHandler(v) {
@@ -265,7 +269,7 @@ function listStoreLoadHandler (err, data)  {
 	fillListData(data)
 }
 
-function listclick(e) {
+function listclickHandler(e) {
 	let value = e.target.getAttribute('value')
 	loadPage({
 		list: value
@@ -295,17 +299,16 @@ function fillListData(data) {
 	listElem.textContent = ''
 
 	data.forEach((el) => {
-		var tmpl = document.getElementById('list-template').content.cloneNode(true)
+		let tmpl = document.getElementById('list-template').content.cloneNode(true)
 		tmpl.querySelector('#list-name').innerText = el.name
 		tmpl.querySelector('#list-name').setAttribute('value', el.name)
-		tmpl.querySelector('#list-name').addEventListener('click', listclick)
+		tmpl.querySelector('#list-name').addEventListener('click', listclickHandler)
 
 	  	listElem.appendChild(tmpl)
 	})
+
+	let tmpl = document.getElementById('list-template').content.cloneNode(true)
+	tmpl.querySelector('#list-name').innerText = 'All'
+	tmpl.querySelector('#list-name').addEventListener('click', resetPage)
+	listElem.appendChild(tmpl)
 }
-
-
-
-
-
-

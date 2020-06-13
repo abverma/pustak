@@ -1,5 +1,5 @@
 //npms
-require('dotenv').config()
+const dotenv = require('dotenv')
 const express = require('express')
 const session = require('express-session')
 const flash = require('express-flash')
@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 
 //app modules
+dotenv.config()
 const {logger, log, error} = require('./customLogger')
 const dbManager = require('./db')
 const passport = require('./passport')
@@ -26,8 +27,10 @@ const store = new MongoDBStore({
 })
 const isLoggedIn = (req, res, next) => {
 	if (req.user) {
+		log('User is logged in.')
 		next()
 	} else {
+		log('User not logged in. Redirectng to /.')
 		res.redirect('/login')
 	}
 }
@@ -100,3 +103,5 @@ function listen () {
 		}
 	})
 }
+
+module.exports = app
