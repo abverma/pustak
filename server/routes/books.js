@@ -102,7 +102,7 @@ router.post('/', (req, res) => {
 		})
 	})
 	.then((err) => {
-		erro(err)
+		error(err)
 		res.status(500)
 	})
 })

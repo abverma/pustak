@@ -46,7 +46,6 @@ exports.connect = (callback) => {
 			}
 			
 		})
-	
 }
 
 exports.getDb = () => {
@@ -67,5 +66,3 @@ exports.close = () => {
 			error('Error in closing connection!')
 		})
 }
-
-

@@ -5,28 +5,17 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style/template.css">
-	<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet"> 
 </head>
 <body>
-	<div class="header">
-		<h1 class="title">Pustak</h1>
-	</div>
-
-	<div class="flash">
-		{{#if messages.error}}
-		<div class="error">
-		    <p>{{ messages.error }}</p>
-		</div>
-		{{/if}}
-		{{#if messages.info}}
-		<div class="success">
-		    <p>{{ messages.info }}</p>
-		</div>
-		{{/if}}
+	<div class="nav">
+		<ul>
+			<li class="brand"><a href="/">Pustak</a></li>
+		</ul>
 	</div>
 	
+	<div class="main">
 	{{{body}}}
-
-	<!-- <footer>&copy; 2020-2021 Abhishek Verma</footer> -->
+	</div>
+	<footer>&copy; 2020-2021 Abhishek Verma</footer>
 </body>
 </html>

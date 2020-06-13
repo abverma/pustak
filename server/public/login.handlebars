@@ -1,6 +1,16 @@
 <form method="POST" action="/login">
 		<h3> Please Log in </h3>
-		<input type="text" name="username" placeholder="User Name">
+		{{#if messages.error}}
+		<div class="error">
+		    <p>{{ messages.error }}</p>
+		</div>
+		{{/if}}
+		{{#if messages.info}}
+		<div class="success">
+		    <p>{{ messages.info }}</p>
+		</div>
+		{{/if}}
+		<input type="text" name="username" placeholder="Email">
 		<input type="password" name="password" placeholder="Password">
 		<input type='submit' name="submit" value="Log In" />	
 		<span>Not a user? <a href="/signup">Signup</a></span>

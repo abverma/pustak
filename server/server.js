@@ -16,10 +16,10 @@ const books = require('./routes/books')
 const login = require('./routes/login')
 const signup = require('./routes/signup')
 
-
 //constants
 const app = express()
 const publicDir = path.join(__dirname, './public')
+const clientDir = path.join(__dirname, '../client/dist')
 const store = new MongoDBStore({
   uri: dbManager.getUri(),
   collection: 'sessions'
@@ -72,12 +72,13 @@ function addRoutes() {
 		res.redirect('/login')
 	})
 	app.get('/', isLoggedIn, (req, res) => {
-		res.sendFile(path.join(publicDir, 'index.html'))
+		res.sendFile(path.join(clientDir, 'index.html'))
 	})
 	app.use('/signup', signup)
 	app.use('/login', login)
 	app.use('/books', isLoggedIn, books)
 	app.use(express.static(publicDir))
+	app.use(express.static(clientDir))
 	app.use(function (err, req, res, next) {
 		error(err.stack)
 		res.render('error')
@@ -98,5 +99,4 @@ function listen () {
 			db = result
 		}
 	})
-	
 }

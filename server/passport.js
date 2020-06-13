@@ -21,6 +21,7 @@ passport.use(new LocalStrategy((username, password, done) => {
 			log('Password mismatch')
 			return done(null, false, {message: 'Password mismatch'})
 		}
+
 		log('Password match')
 		return done(null, myuser)
 	})

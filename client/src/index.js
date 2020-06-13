@@ -1,3 +1,56 @@
+import Store from './store'
+class Book {
+
+	constructor(name, fields) {
+		this.name = name
+		this.fields = fields
+	}
+
+	getFields() {
+		return this.fields
+	}
+
+	setFields(fields) {
+		this.fields = fields
+	}
+
+	getName() {
+		return this.name
+	}
+
+	setName(name) {
+		this.name = name
+	}
+}
+
+
+//List model
+class List {
+
+	constructor(name, fields) {
+		this.name = name
+		this.fields = fields
+		this.name = ''
+		this.fields = []
+	}
+
+	getFields() {
+		return this.fields
+	}
+
+	setFields(fields) {
+		this.fields = fields
+	}
+
+	getName() {
+		return this.name
+	}
+
+	setName(name) {
+		this.name = name
+	}
+}
+
 const input = document.querySelector("#searchtext")
 const searchbtn = document.querySelector("#searchbtn")
 const reset = document.querySelector("#resetbtn")
@@ -8,6 +61,7 @@ const checkbox = document.querySelector('#checkbox')
 const localBooksUrl = '/books'
 const booksUrl = '/books/search'
 let slide = false
+let bookStore, listStore, onlineBookStore
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
@@ -25,133 +79,10 @@ reset.addEventListener('click', (v) => {
 		searchbtn.classList.remove('searchBtn')
 		searchbtn.classList.add('disabled')
 		searchbtn.disabled = true
-		btnHandler()
+		loadPage()
 	}
 	
 })
-
-class Book {
-	name = '';
-	fields = [];
-
-	constructor(name, fields) {
-		this.name = name
-		this.fields = fields
-	}
-
-	getFields() {
-		return this.fields
-	}
-
-	setFields(fields) {
-		this.fields = fields
-	}
-
-	getName() {
-		return this.name
-	}
-
-	setName(name) {
-		this.name = name
-	}
-}
-
-class List {
-	name = '';
-	fields = [];
-
-	constructor(name, fields) {
-		this.name = name
-		this.fields = fields
-	}
-
-	getFields() {
-		return this.fields
-	}
-
-	setFields(fields) {
-		this.fields = fields
-	}
-
-	getName() {
-		return this.name
-	}
-
-	setName(name) {
-		this.name = name
-	}
-}
-
-class Store {
-	data = [];
-	currentPage = 1;
-	constructor(model, proxy) {
-		if (!model || !proxy) {
-			throw Error('Incomplete store definition')
-		}
-		this.model = model
-		this.proxy = proxy
-	}
-
-	load(options) {
-		
-		let {params, callback, page=1} = options
-
-		if (!callback){
-			throw Error('Callback function required for function load.')
-		}
-		 else {
-		 	let start = params ? 0 : (this.currentPage - 1)*25
-		 	
-			let url = this.proxy.url + '?start=' + start + '&limit=25',
-			method = this.proxy.method || 'GET',
-			rootProperty = this.proxy.rootProperty,
-			totalProperty = this.proxy.totalProperty
-
-			if (params) {
-				this.params = params
-			}
-
-			let urlparams = new URLSearchParams(this.params).toString()
-			
-			if (urlparams) {
-				url += '&' + urlparams
-			}
-
-			fetch(url)
-				.then((response) => {
-					return response.json()
-				})
-				.then((jsonResponse) => {
-					this.data = jsonResponse[rootProperty]
-					this.currentPage = page
-					callback(null, jsonResponse[rootProperty], jsonResponse[totalProperty], this.currentPage)
-				})
-				.catch((err) => {
-					callback(err)
-				})
-		}
-		
-	}
-
-	loadNextPage(callback) {
-		this.load({
-			callback,
-			page: ++this.currentPage
-		})
-	}
-
-	loadPreviousPage(callback) {
-		this.load({
-			callback,
-			page: --this.currentPage
-		})
-	}
-
-	getData() {
-		return this.data
-	}
-}
 
 const book = new Book('book', [{
 	'name': 'title'
@@ -166,8 +97,6 @@ const book = new Book('book', [{
 const list = new List('list', [{
 	'name': 'list'
 }])
-
-let bookStore, listStore
 
 document.onload = start()
 
@@ -199,7 +128,7 @@ function start() {
 		callback: listStoreLoadHandler
 	})
 
-	btnHandler()
+	loadPage()
 }
 
 function inputHandler(v) {
@@ -214,38 +143,50 @@ function inputHandler(v) {
 	}
 }
 
-function btnHandler(v, params, nextPage = false, previousPage = false) {
+function btnHandler(v) {
+	loadPage({
+		title: input.value
+	})
+}
 
-	let options = {
-		callback: bookStoreLoadHandler
-	}
-
-	if (!params && (!nextPage || !previousPage)) {
-		params = {}
-	}
-
-	if (params && input.value) {
-		params['title'] = input.value
-	}
-
-	options.params = params
-
+function mask() {
 	resultElem.classList.remove('slidefocus')
 	resultElem.classList.remove('focus')
 
 	resultElem.style.display = 'none'
 	loader.style.display = 'block'
+}
+
+function unmask() {
+	resultElem.style.display = 'block'
+	loader.style.display = 'none'
+
+	if (slide) {
+		resultElem.classList.add('slidefocus')
+	} else {
+		resultElem.classList.add('focus')
+	}
+
+	slide = false
+}
+
+function loadPage (params) {
+	let options = {
+		callback: bookStoreLoadHandler
+	}
+
+	if (!params) {
+		params = {}
+	}
+
+	options.params = params
+
+	mask()
 
 	if (checkbox.checked) {
 		onlineBookStore.load(options)
 	} else {
-		if (nextPage) {
-			bookStore.loadNextPage(options.callback)
-		} else if (previousPage) {
-			bookStore.loadPreviousPage(options.callback)
-		} else {
-			bookStore.load(options)
-		}
+		bookStore.load(options)
 	}
 }
 
@@ -255,12 +196,14 @@ function disableAnchorListner(event) {
 
 function loadNextPage(event) {
 	event.preventDefault()
-	btnHandler(null, null, true)
+	mask()
+	bookStore.loadNextPage(bookStoreLoadHandler)
 }
 
 function loadPreviousPage(event) {
 	event.preventDefault()
-	btnHandler(null, null, false, true)
+	mask()
+	bookStore.loadPreviousPage(bookStoreLoadHandler)
 }
 
 function disableAnchor(anchor, flag = true) {
@@ -312,17 +255,7 @@ function bookStoreLoadHandler (err, data, count, currentPage)  {
 	}
 
 	fillBookData(data)
-
-	resultElem.style.display = 'block'
-	loader.style.display = 'none'
-
-	if (slide) {
-		resultElem.classList.add('slidefocus')
-	} else {
-		resultElem.classList.add('focus')
-	}
-
-	slide = false
+	unmask()
 }
 
 function listStoreLoadHandler (err, data)  {
@@ -333,8 +266,8 @@ function listStoreLoadHandler (err, data)  {
 }
 
 function listclick(e) {
-	let value = e.attributes.value.value
-	btnHandler(null, {
+	let value = e.target.getAttribute('value')
+	loadPage({
 		list: value
 	})
 }
@@ -365,7 +298,7 @@ function fillListData(data) {
 		var tmpl = document.getElementById('list-template').content.cloneNode(true)
 		tmpl.querySelector('#list-name').innerText = el.name
 		tmpl.querySelector('#list-name').setAttribute('value', el.name)
-		tmpl.querySelector('#list-name').setAttribute('onclick', 'listclick(this)')
+		tmpl.querySelector('#list-name').addEventListener('click', listclick)
 
 	  	listElem.appendChild(tmpl)
 	})
