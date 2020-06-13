@@ -7,7 +7,7 @@
 <body>
 	<div class="nav">
 		<ul>
-			<li class="brand"><a href="/">Pustak</a></li>
+			<li class="brand"><a href="/#">Pustak</a></li>
 			<li style="float: right;"><a href="/logout">Logout</a></li>
 		</ul>
 	</div>
@@ -28,7 +28,7 @@
 				<label for="goodreads">Search on goodreads.com</label>
 			</div>
 			<div class="result">
-				<p><span id="total" class="paging"></span> <span><a class="paging next" href="" disabled>Next</a></span><span><a class="paging previous" href="">Prev</a></span></p>
+				<p><span id="total" class="paging"></span> <span><a class="paging next" href="" disabled>Next</a></span><span><a class="paging previous" href="">Prev</a></span><span><a class="paging bottom" href="">Bottom</a></span></p>
 				<div id="result"></div>
 				<div class="loader">
 				</div>
@@ -40,14 +40,14 @@
 		<div id="book" class="book">
 			<p class="book-title"></p>
 			<p>Author - <span class="book-author"></span></p>
-			<p>List - <span class="book-list"></span></p>
+			<!-- <p>List - <span class="book-list"></span></p> -->
 			<p>Rating - <span class="book-average-rating"></span></p>
 
 			<div class="actions">
 				<ul>
-					<li>Mark as Read</li>
-					<li>Mark as Want To Read</li>
-					<li>Mark as Currently Reading</li>
+					<li class="action" click="mark('read')"><a href="">Read</a></li>
+					<li class="action" click="mark('want')"><a href="">Want To Read</a></li>
+					<li class="action" click="mark('reading')"><a href="">Currently Reading</a></li>
 				</ul>
 			</div>
 		</div>
@@ -56,6 +56,9 @@
 		<div class="list">
 			<a href="#"id="list-name"></a>
 		</div>
+	</template>
+	<template id="bottomToolBarTemplate" >
+		<p class="bottomToolBar"><a class="paging top" href="">Top</a></span></p>
 	</template>
 	<footer>&copy; 2020-2021 Abhishek Verma</footer>
 	<script src="./main.js"></script>

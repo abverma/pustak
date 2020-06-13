@@ -2,6 +2,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('./models/user')
 const {logger, log, error} = require('./customLogger')
+const bcrypt = require('bcrypt')
 
 
 passport.use(new LocalStrategy((username, password, done) => {
@@ -17,13 +18,16 @@ passport.use(new LocalStrategy((username, password, done) => {
 			return done(null, false, {message: 'User not found'})
 		}
 
-		if (password != myuser.password) {
-			log('Password mismatch')
-			return done(null, false, {message: 'Password mismatch'})
-		}
-
-		log('Password match')
-		return done(null, myuser)
+		bcrypt.compare(password, myuser.password)
+		.then(function(result) {
+		    if (result) {
+		    	log('Password match')
+				return done(null, myuser)
+		    } else {
+		    	log('Password mismatch')
+				return done(null, false, {message: 'Password mismatch'})
+		    }
+		})
 	})
 	.catch((err) => {
 		error(err)

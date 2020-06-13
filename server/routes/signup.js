@@ -2,11 +2,12 @@ const express = require('express')
 const dbManager = require('../db')
 const {log, error} = require('../customLogger')
 const User = require('../models/user')
+const List = require('../models/lists')
+
 const router = express.Router()
 
 router.post('/', (req, res) => {
 	delete req.body.submit
-	log(req.body)
 	let {username, password} = req.body
 
 	User.find({
@@ -23,20 +24,20 @@ router.post('/', (req, res) => {
 	})
 	.then((result) => {
 		if (result) {
-			log('Created user')
+			log('User created')
 			log(result.ops)
 			req.flash('info', 'User created')
 			res.redirect('/login')
 		} else {
-			req.flash('error', 'User already exists')
+			req.flash('info', 'User already exists')
 			res.redirect('/signup')
 		}
-		
 	})
 	.catch((err) => {
-		erro(err)
+		error(err)
 		res.render('error')
 	})
+		
 })
 
 router.get('/', (req, res) => {

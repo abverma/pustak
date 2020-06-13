@@ -103,6 +103,11 @@ form > input[type="submit"]:hover {
 	color: var(--accent-color);
 }
 
+.errorPage {
+	margin: 40px auto;
+	text-align: center
+}
+
 footer {
 	padding: 32px;
 	text-align: center;

@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 
 	delete filter.start
 	delete filter.limit
-	const books = Books.findBooks(filter, start, limit)
+	const books = Books.find(filter, start, limit)
 	const count = Books.getCount(filter)
 
 	Promise.all([books, count])
@@ -26,28 +26,6 @@ router.get('/', (req, res) => {
 				success: true,
 				data: result[0],
 				count: result[1]
-			})
-		})
-		.catch((err) => {
-			log(err)
-			res.send(err)
-		})
-})
-
-router.get('/lists', (req, res) => {
-
-	let filter = {
-		user_id: req.user._id,
-	}
-
-	start = req.query.start ? parseInt(req.query.start) : 0
-	limit = req.query.limit ? parseInt(req.query.limit) : 25
-
-	Books.findLists(filter, start, limit)
-		.then((result) => {
-			res.status(200).json({
-				success: true,
-				data: result
 			})
 		})
 		.catch((err) => {
@@ -90,12 +68,11 @@ router.get('/search', (req, res) => {
 
 router.post('/', (req, res) => {
 
-	let intake = req.body
-	let userId = req.user._id
+	let book = req.body
+	book.user_id = req.user._id
+	log(book)
 
-	log(intake)
-
-	dbManager.updateIntake(intake, userId)
+	Books.update(book)
 	.then((result) => {
 		res.send({
 			success: true

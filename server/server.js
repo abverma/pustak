@@ -16,6 +16,7 @@ const passport = require('./passport')
 const books = require('./routes/books')
 const login = require('./routes/login')
 const signup = require('./routes/signup')
+const lists = require('./routes/lists')
 
 //constants
 const app = express()
@@ -27,7 +28,6 @@ const store = new MongoDBStore({
 })
 const isLoggedIn = (req, res, next) => {
 	if (req.user) {
-		log('User is logged in.')
 		next()
 	} else {
 		log('User not logged in. Redirectng to /.')
@@ -80,6 +80,7 @@ function addRoutes() {
 	app.use('/signup', signup)
 	app.use('/login', login)
 	app.use('/books', isLoggedIn, books)
+	app.use('/lists', isLoggedIn, lists)
 	app.use(express.static(publicDir))
 	app.use(express.static(clientDir))
 	app.use(function (err, req, res, next) {

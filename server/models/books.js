@@ -1,7 +1,7 @@
 const {ObjectID} = require('mongodb') 
 const dbManager = require('../db')
 
-exports.findBooks = (query, start, limit) => {
+exports.find = (query, start, limit) => {
 
 	const db = dbManager.getDb()
 
@@ -38,14 +38,10 @@ exports.findBooks = (query, start, limit) => {
 	return db.collection('books').aggregate(pipelines).toArray()
 }
 
-exports.findLists = (query, start, limit) => {
-
-	const db = dbManager.getDb()
-
-	return db.collection('lists').find(query).skip(start).limit(limit).toArray()
-}
 
 exports.getCount = (query) => {
+	const db = dbManager.getDb()
+
 	let match = { 
 		user_id:  ObjectID(query.user_id)
 	}
@@ -59,5 +55,20 @@ exports.getCount = (query) => {
 	if (query && query.hasOwnProperty('list') && query.list) {
 		match['list'] = query.list
 	}
+
 	return db.collection('books').countDocuments(match)
+}
+
+exports.update = (book, id) => {
+	const db = dbManager.getDb()
+
+	if (book._id) {
+		delete book._id
+		return db.collection('books').updateOne({'_id': ObjectID(id)}, {
+			$set: book
+		})
+	} else {
+		return db.collection('books').insertOne(book)
+	}
+	
 }
