@@ -70,6 +70,8 @@ router.post('/', (req, res) => {
 
 	let book = req.body
 	book.user_id = req.user._id
+	book.last_update_date = new Date()
+	book.list_update_date = new Date()
 	log(book)
 
 	Books.update(book)

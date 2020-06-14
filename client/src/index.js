@@ -59,13 +59,15 @@ const resultElem = document.querySelector('#result')
 const loader = document.querySelector('.loader')
 const checkbox = document.querySelector('#checkbox')
 const bottom = document.querySelector('.bottom')
-let top
 const nav = document.querySelector('.nav')
 const footer = document.querySelector('footer')
+const hamburger = document.querySelector('.hamburger')
+const left = document.querySelector('.left')
+
 const localBooksUrl = '/books'
 const booksUrl = '/books/search'
 let slide = false
-let bookStore, listStore, onlineBookStore, currentList
+let bookStore, listStore, onlineBookStore, currentList, top
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
@@ -81,7 +83,23 @@ bottom.addEventListener('click', (e) => {
 	e.preventDefault()
 	footer.scrollIntoView()
 })
+hamburger.addEventListener('click', (e) => {
+	e.preventDefault()
 
+	if (left.style.left !== '0px') {
+		left.style.left = '0px'
+		left.classList.add('slideOpen')
+	} else {
+		left.style.left = '-250px'
+		left.classList.remove('slideOpen')
+	}
+	
+})
+
+hamburger.addEventListener('animationed', (e) => {
+	if (left.style.left = '-250px') {
+	}
+})
 
 const book = new Book('book', [{
 	'name': 'title'
@@ -157,10 +175,21 @@ function btnHandler(v) {
 
 function listclickHandler(e) {
 	let value = e.target.getAttribute('value')
+	let links = document.querySelectorAll('#list-name')
+
+	Object.keys(links).forEach(x => links[x].classList.remove('activeLink'))
+
+	e.target.classList.add('activeLink')
 	currentList = value
-	loadPage({
-		list: value
-	})
+
+	if (value == 'All') {
+		resetPage()
+	} else {
+		loadPage({
+			list: value
+		})
+	}
+	
 }
 
 function actionListener(data, newList) {
@@ -336,10 +365,12 @@ function fillBookData(data) {
 		Object.keys(actionsAnchors).forEach(x => actionsAnchors[x].addEventListener('click', (e) => {
 			e.preventDefault()
 			let curnode = e.target
+			let oldList = el.list
 			Object.keys(actionsAnchors).forEach(x => actionsAnchors[x].classList.remove('active'))
 			curnode.classList.add('active')
-			if (!el._id || currentList !== 'All' && el.list !== e.target.innerHTML) {
-				actionListener(el, e.target.innerHTML)
+			actionListener(el, e.target.innerHTML)
+
+			if (el._id && currentList !== 'All' && oldList !== e.target.innerHTML) {
 				while (curnode.getAttribute('class') != 'book') {
 				    curnode = curnode.parentNode
 				}
@@ -372,6 +403,13 @@ function fillListData(data) {
 	//clear existing list before repopulating
 	listElem.textContent = ''
 
+	let tmpl = document.getElementById('list-template').content.cloneNode(true)
+	tmpl.querySelector('#list-name').innerText = 'All'
+	tmpl.querySelector('#list-name').setAttribute('value', 'All')
+	tmpl.querySelector('#list-name').setAttribute('class', 'activeLink')
+	tmpl.querySelector('#list-name').addEventListener('click', listclickHandler)
+	listElem.appendChild(tmpl)
+
 	data.forEach((el) => {
 		let tmpl = document.getElementById('list-template').content.cloneNode(true)
 		tmpl.querySelector('#list-name').innerText = el.name
@@ -380,9 +418,5 @@ function fillListData(data) {
 
 	  	listElem.appendChild(tmpl)
 	})
-
-	let tmpl = document.getElementById('list-template').content.cloneNode(true)
-	tmpl.querySelector('#list-name').innerText = 'All'
-	tmpl.querySelector('#list-name').addEventListener('click', resetPage)
-	listElem.appendChild(tmpl)
+	
 }

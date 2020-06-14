@@ -17,6 +17,7 @@ const books = require('./routes/books')
 const login = require('./routes/login')
 const signup = require('./routes/signup')
 const lists = require('./routes/lists')
+const activator = require('./util/activator')
 
 //constants
 const app = express()
@@ -77,6 +78,7 @@ function addRoutes() {
 	app.get('/', isLoggedIn, (req, res) => {
 		res.sendFile(path.join(clientDir, 'index.html'))
 	})
+	app.get('/activate', activator.activateUser)
 	app.use('/signup', signup)
 	app.use('/login', login)
 	app.use('/books', isLoggedIn, books)

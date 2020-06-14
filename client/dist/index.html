@@ -3,37 +3,48 @@
 <head>
 	<title>Pustak</title>
 	<link rel="stylesheet" type="text/css" href="../style/style.css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 <body>
 	<div class="nav">
+		<div class="hamburger">
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
 		<ul>
 			<li class="brand"><a href="/#">Pustak</a></li>
-			<li style="float: right;"><a href="/logout">Logout</a></li>
+			<li style="float: right;"><a class="logout" href="/logout">Logout</a></li>
 		</ul>
 	</div>
 	<div class="content">
-		<div class="left">
-			<h3>Lists</h3>
-			<div id="lists" class="lists"></div>
-		</div>
-		<div class="main">
-			
-			<div class="searchbox">
-				<input id="searchtext" type="text" name="search" class="bigsearch" placeholder="Search your books">
-				<button id="searchbtn" class="disabled" disabled=true>Search</button>
-				<button id="resetbtn" class="searchBtn">Reset</button>	
+		<div class="tiredofnames">
+			<div class="left">
+				<h3>Lists</h3>
+				<div id="lists" class="lists"></div>
+				<h3 class="leftLogout"><a href="/logout">Logout</a></h3>
 			</div>
-			<div class="goodreads">
-				<input id="checkbox" type="checkbox" name="goodreads">
-				<label for="goodreads">Search on goodreads.com</label>
-			</div>
-			<div class="result">
-				<p><span id="total" class="paging"></span> <span><a class="paging next" href="" disabled>Next</a></span><span><a class="paging previous" href="">Prev</a></span><span><a class="paging bottom" href="">Bottom</a></span></p>
-				<div id="result"></div>
-				<div class="loader">
+			<div class="main">
+				
+				<div class="searchbox">
+					<input id="searchtext" type="text" name="search" class="bigsearch" placeholder="Search your books">
+					<button id="searchbtn" class="disabled" disabled=true>Search</button>
+					<button id="resetbtn" class="searchBtn">Reset</button>	
+				</div>
+				<div class="goodreads">
+					<input id="checkbox" type="checkbox" name="goodreads">
+					<label for="goodreads">Search on goodreads.com</label>
+				</div>
+				<div class="result">
+					<p><span id="total" class="paging"></span> <span><a class="paging next" href="" disabled>Next</a></span><span><a class="paging previous" href="">Prev</a></span><span><a class="paging bottom" href="">Bottom</a></span></p>
+					<div id="result"></div>
+					<div class="loader">
+					</div>
 				</div>
 			</div>
 		</div>
+		
 	</div>
 	
 	<template id="book-template">

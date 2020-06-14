@@ -33,3 +33,9 @@ exports.create = (user) => {
 	})
 	
 }
+
+exports.update = (id, updateObj) => {
+  	const db = dbManager.getDb()
+
+	return db.collection('users').updateOne({_id: ObjectID(id)}, {$set: updateObj})
+}

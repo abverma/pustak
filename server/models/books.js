@@ -59,9 +59,9 @@ exports.getCount = (query) => {
 	return db.collection('books').countDocuments(match)
 }
 
-exports.update = (book, id) => {
+exports.update = (book) => {
 	const db = dbManager.getDb()
-
+	const id = book._id
 	if (book._id) {
 		delete book._id
 		return db.collection('books').updateOne({'_id': ObjectID(id)}, {
