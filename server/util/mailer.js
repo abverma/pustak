@@ -25,7 +25,7 @@ const sendMail = (msg) => {
 
 exports.sendActivationMail = (user, req) => {
   const prelink = `Please click on the following link, or paste it in your browser to acccess the application.\n\n`
-  const hostString = `http://${req.hostname}:${process.env.PORT}/activate?u=${user.username}&c=${user.activation_code}`
+  const hostString = `${process.env.PROTOCOL}://${req.hostname}/activate?u=${user.username}&c=${user.activation_code}`
   const postLink = '\n\nIf you have not requested this, please ignore the email'
 
   const text = prelink + hostString + postLink
