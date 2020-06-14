@@ -63,11 +63,10 @@ const nav = document.querySelector('.nav')
 const footer = document.querySelector('footer')
 const hamburger = document.querySelector('.hamburger')
 const left = document.querySelector('.left')
-
 const localBooksUrl = '/books'
 const booksUrl = '/books/search'
 let slide = false
-let bookStore, listStore, onlineBookStore, currentList, top
+let bookStore, listStore, onlineBookStore, currentList, top, bottomToolBar
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
@@ -81,7 +80,7 @@ searchbtn.addEventListener('click', btnHandler)
 reset.addEventListener('click', resetHandler)
 bottom.addEventListener('click', (e) => {
 	e.preventDefault()
-	footer.scrollIntoView()
+	bottomToolBar.scrollIntoView()
 })
 hamburger.addEventListener('click', (e) => {
 	e.preventDefault()
@@ -96,10 +95,11 @@ hamburger.addEventListener('click', (e) => {
 	
 })
 
-hamburger.addEventListener('animationed', (e) => {
-	if (left.style.left = '-250px') {
-	}
-})
+// left.addEventListener('animationed', (e) => {
+// 	if (left.style.left = '-250px') {
+// 		left.classList.remove('slideOpen')
+// 	}
+// })
 
 const book = new Book('book', [{
 	'name': 'title'
@@ -180,6 +180,9 @@ function listclickHandler(e) {
 	Object.keys(links).forEach(x => links[x].classList.remove('activeLink'))
 
 	e.target.classList.add('activeLink')
+	left.style.left = '-250px'
+	left.classList.remove('slideOpen')
+
 	currentList = value
 
 	if (value == 'All') {
@@ -217,6 +220,7 @@ function resetPage(v) {
 	searchbtn.classList.remove('searchBtn')
 	searchbtn.classList.add('disabled')
 	searchbtn.disabled = true
+	input.value = ''
 	loadPage()
 }
 
@@ -345,11 +349,11 @@ function fillBookData(data) {
 	//clear existing list before repopulating
 	resultElem.textContent = ''
 	
-	var bottomToolBar = document.getElementById('bottomToolBarTemplate').content.cloneNode(true)
+	let bottomToolBarNode = document.getElementById('bottomToolBarTemplate').content.cloneNode(true)
 
 	data.forEach((el) => {
 
-		var tmpl = document.getElementById('book-template').content.cloneNode(true)
+		const tmpl = document.getElementById('book-template').content.cloneNode(true)
 		tmpl.querySelector('.book-title').innerText = el.title
 	  	// tmpl.querySelector('.book-list').innerText = el.list ? el.list : ''
 	  	tmpl.querySelector('.book-author').innerText = el.author
@@ -387,7 +391,8 @@ function fillBookData(data) {
 	})
 
 	if (data.length) {
-		resultElem.appendChild(bottomToolBar)
+		resultElem.appendChild(bottomToolBarNode)
+		bottomToolBar = document.querySelector('.bottomToolBar')
 	  	top = document.querySelector('.top')
 	  	top.addEventListener('click', (e) => {
 	  		e.preventDefault()
