@@ -291,6 +291,23 @@ function disableAnchor(anchor, flag = true) {
 	}
 }
 
+function hidePaging(flag, classes) {
+
+	classes.forEach((cls) => {
+		console.log(cls)
+		let elem = document.querySelector(cls)
+
+		if (elem) {
+			if (flag) {
+				elem.style.display = 'none'
+			} else {
+				elem.style.display = 'block'
+			}
+		}
+		
+	})
+}
+
 function disableAnchorListner(event) {
 	event.preventDefault()
 }
@@ -305,12 +322,15 @@ function bookStoreLoadHandler (err, data, count, currentPage)  {
 
 	if (data) {
 		if (data.length == 0) {
-			total.innerHTML = 'No books found'
+			total.innerHTML = 'No books found. Search a book with above checkbox checked to search a book on goodreads.com and then add it to your list.'
 			
+			hidePaging(true, ['.bottom', '.previous', '.next'])
 			disableAnchor(previous)
 			disableAnchor(next)
 
 		} else {
+			hidePaging(false, ['.bottom', '.previous', '.next'])
+
 			total.innerHTML = (((currentPage - 1) * 25) + 1) + ' - ' + (((currentPage - 1) * 25) + data.length) + ' of ' + count + ' books'
 
 			if (data.length + (currentPage - 1) * 25 == count ) {
@@ -399,7 +419,8 @@ function fillBookData(data) {
 	  		nav.scrollIntoView()
 	  	})
 	}
-	
+
+
 }
 
 function fillListData(data) {

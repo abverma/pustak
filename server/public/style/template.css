@@ -27,7 +27,21 @@ body {
 }
 
 .main {
+	height: 100%;
+	background-image: url("/assets/vertical.jpg");
+	background-size: cover;
+	background-position: initial;
+	color: var(--accent-color);
 	flex: 1;
+}
+
+.right {
+	float: right;
+	padding: 0 10px;
+}
+
+.right a {
+	display: none;
 }
 
 .nav {
@@ -35,6 +49,15 @@ body {
 	font-size: 18px;
 	background: var(--accent-bg-color);
 	color: var(--accent-color);
+}
+
+.nav h2 {
+	text-align: center;
+	padding: 5px;
+}
+
+.nav ul {
+	display: none;
 }
 
 .nav li, .actions li {
@@ -73,9 +96,10 @@ body {
 }
 
 form {
+	position: relative;
 	padding: 20px;
 	text-align: center;
-	margin: 20px;
+	margin: auto;
 }
 
 form > * {
@@ -87,11 +111,17 @@ a {
 	color: #74ccf4;
 }
 
+
 form > input {
 	display: block;
-	margin: 10px auto;
-	font-size: 18px;
-	border-radius: 2px;
+	margin: 20px auto;
+	font-size: 16px;
+	border: 0;
+	border-bottom: 1px solid #bbb;
+}
+
+form > input[type="text"], input[type="password"] {
+	width: 60%;
 }
 
 form > input[type="submit"] {
@@ -113,18 +143,50 @@ form > input[type="submit"]:hover {
 }
 
 footer {
-	padding: 32px;
+	padding: 15px;
 	text-align: center;
 	flex-shrink: 0;
 	background: var(--accent-bg-color);
 	color: var(--accent-color);
 }
 
+.content {
+	font-size: 30px;
+	position: relative;
+	top: 130px;
+	padding-top: 100px;
+	padding-left: 30px;
+	line-height: 1.5;
+}
+
 @media only screen and (min-width: 768px) {
 	
+	.nav h2 {
+		display: none;
+	}
+
+	.nav ul {
+		display: block;
+	}
+
 	form {
+		top: 25%;
 		width: 30vw;
 		margin: 20px auto;
+	}
+
+	.right a {
+		display: block;
+	}
+
+	.main {
+		margin-top: 5px;
+		background-image: url("/assets/black.jpg");
+	}
+
+	footer {
+		margin-top: 5px;
+		padding: 32px;
 	}
 
 }
