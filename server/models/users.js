@@ -53,7 +53,7 @@ exports.findOrCreate = (query, newuser) => {
 					verified: true
 				}, newuser))
 
-				resolve(db.collection('users').findOne(newuser))
+				resolve(db.collection('users').findOne(query))
 			} else {
 				resolve(user)
 			}

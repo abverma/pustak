@@ -544,7 +544,7 @@ function fillBookData(data) {
 	  	top = document.querySelector('.top')
 	  	top.addEventListener('click', (e) => {
 	  		e.preventDefault()
-	  		nav.scrollIntoView()
+	  		bottom.scrollIntoView()
 	  	})
 	}
 

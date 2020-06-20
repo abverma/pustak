@@ -26,7 +26,7 @@ const sendMail = (msg) => {
 exports.sendActivationMail = (user, req) => {
   const prelink = `Please click on the following link, or paste it in your browser to acccess the application.\n\n`
   const hostString = `${process.env.PROTOCOL}://${req.hostname}/activate?u=${user.username}&c=${user.activation_code}`
-  const postLink = '\n\nIf you have not requested this, please ignore the email'
+  const postLink = '\n\nIf you have not requested this, please ignore the email.\n\n Thanks\n Qitaab Team'
 
   const text = prelink + hostString + postLink
 
@@ -43,7 +43,7 @@ exports.sendSignupNotification = (user) => {
   const from = 'admin@qitaab.com'
   const to = 'abverma@protonmail.com'
   const subject = 'Qitaab Signup Notification'
-  const text = user.username + ' has signed up to the app. \n \n Thanks \n Pustak Team'
+  const text = user.username + ' has signed up to the app. \n \n Thanks \n Qitaab Team'
   sendMail({
     from,
     to,
@@ -58,7 +58,7 @@ exports.sendResetPassword = async (user, password) => {
   const from_email = new helper.Email('admin@apnenotes.com')
   const to_email = new helper.Email(user.email)
   const subject = 'Reset Password'
-  const content = new helper.Content('text/plain', user.firstName + ',\n Your new password is ' + password + '\n \n Thanks \n Notes Team')
+  const content = new helper.Content('text/plain', user.firstName + ',\n Your new password is ' + password + '\n \n Thanks \n Qitaab Team')
   const mail = new helper.Mail(from_email, subject, to_email, content)
 
   const request = sg.emptyRequest({
