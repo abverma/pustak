@@ -68,7 +68,11 @@ exports.update = (book) => {
 			$set: book
 		})
 	} else {
-		return db.collection('books').insertOne(book)
+		return db.collection('books').updateOne({'goodread_id': book.goodread_id}, {
+			$set: book
+		}, {
+			upsert: true
+		})
 	}
 	
 }

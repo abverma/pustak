@@ -1,10 +1,12 @@
 :root {
-	--main-bg-color: #fff;
-	--main-color: #111;
-	--link-color: #03A9F4;
+	--main-bg-color: #444; /*#fff; #333;*/
+	--main-color: #fff; /*#111; #fff;*/
+	--link-color: #03A9F4; /*#03A9F4;*/
 	--accent-bg-color: #03A9F4;
-	--accent-color: #fff;
+	--accent-color: #fff; /*#fff;*/
+	--inactive-link-color: #fff; /*#fff; #757575;*/
 } 
+
 @keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -47,6 +49,17 @@ body {
 	font-size: 1rem;
 }
 
+
+a {
+	text-decoration-line: none;
+	color: var(--inactive-link-color); /*#757575;*/
+}
+
+a:hover {
+	/*color: #ffd54f;*/
+	color: var(--link-color);
+}
+
 .hamburger {
 	float: left;
 	margin: 0 10px;
@@ -77,33 +90,38 @@ body {
 	margin: 5px 10px 5px 0;
 }
 
-.logout {
+.menuAction {
 	display: none;
+}
+
+.contextMenu {
+	display: none;
+}
+
+.leftNavLinks {
+	margin: 15px 0;
 }
 
 .nav a {
 	text-decoration: none;
 	color: inherit;
 }
-.nav a:hover {
-	color: var(--main-bg-color);
-	text-decoration-line: blink;
-}
+
 
 .brand {
 	font-size: 28px;
-	color: var(--main-bg-color);
+	color: var(--accent-color);
 	font-weight: bolder;
 	text-align: center;
 }
 
 .content {
-	
+	overflow-y: scroll;
 	padding-bottom: 32px;
 	flex: 1;
 }
 
-.tiredofnames {
+.home {
 	display: flex;
 	justify-content: space-evenly;
 }
@@ -113,7 +131,14 @@ body {
 	width: 60%;
 }
 
-.left {
+.lists {
+	margin: 5px;
+	background: var(--main-bg-color);
+	height: 100%;
+	display: none;
+}
+
+.leftNav {
 	position: absolute;
 	margin: 5px;
 	left: -250px;
@@ -124,25 +149,27 @@ body {
 	transition: left .5s;
 }
 
-.left h3 {
+.lists h3 {
 	color: #0288D1;
 }
 
 .main {
 	margin: 5px;
 	position: relative;
-	width: 100%
+	width: 100%;
 }
 
-a {
-	text-decoration-line: none;
-	color: #757575;
+.other {
+	margin: 5px;
+	position: relative;
+	width: 100%;
 }
 
-a:hover {
-	/*color: #ffd54f;*/
-	color: var(--link-color);
+.profile {
+	line-height: 2;
 }
+
+
 
 .activeLink {
 	color: var(--link-color);
@@ -189,8 +216,8 @@ a:hover {
 }
 
 .searchBtn:hover {
-	background: var(--link-color); /*rgb(76, 175, 80);*/
-	color: var(--main-bg-color);	
+	background: var(--accent-bg-color); /*rgb(76, 175, 80);*/
+	color: var(--accent-color);	
 }
 
 .bigsearch {
@@ -260,10 +287,6 @@ a:hover {
 	font-weight: bold;
 }
 
-.lists {
-	padding: 20px 0;
-}
-
 .list {
 	padding: 5px 0;
 }
@@ -303,6 +326,11 @@ footer {
 	color: var(--accent-color);
 }
 
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
 @media only screen and (min-width: 768px) {
 
 	.hamburger {
@@ -313,7 +341,11 @@ footer {
 		padding: 10px 20px;
 	}
 
-	.logout {
+	.menuAction {
+		display: block;
+	}
+
+	.contextMenu {
 		display: block;
 	}
 
@@ -321,14 +353,22 @@ footer {
 		margin: 20px 10vw;
 	}
 
-	.left {
-		left: auto;
+	.lists {
 		flex-grow: 1;
 		padding: 10px 40px;
-		position: inherit;
+		display: block;
 	}
 
-	.leftLogout {
+	.nav a:hover {
+		color: var(--main-bg-color);
+		text-decoration-line: blink;
+	}
+
+	.leftNav {
+		display: none;
+	}
+
+	.leftNavLinks {
 		display: none;
 	}
 
@@ -336,6 +376,12 @@ footer {
 		padding: 10px;
   		width: 60vw;
   		position: inherit;
+	}
+
+	.other {
+		padding: 10px;
+  		width: 40vw;
+  		position: inherit
 	}
 
 	.bigSearch {

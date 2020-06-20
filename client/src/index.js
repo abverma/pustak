@@ -51,6 +51,51 @@ class List {
 	}
 }
 
+//User model
+class User {
+
+	constructor(name, fields) {
+		this.name = name
+		this.fields = fields
+		this.name = ''
+		this.fields = []
+	}
+
+	getFields() {
+		return this.fields
+	}
+
+	setFields(fields) {
+		this.fields = fields
+	}
+
+	getName() {
+		return this.name
+	}
+
+	setName(name) {
+		this.name = name
+	}
+}
+
+const darkTheme =  {
+	'--main-bg-color': '#444', /*#fff; #333;*/
+	'--main-color': '#fff', /*#111; #fff;*/
+	'--link-color': '#03A9F4', /*#03A9F4;*/
+	'--accent-bg-color': '#03A9F4',
+	'--accent-color': '#fff', /*#fff;*/
+	'--inactive-link-color': '#fff' /*#fff; #757575;*/
+}
+
+const lightTheme =  {
+	'--main-bg-color': '#fff', /*#fff; #333;*/
+	'--main-color': '#111', /*#111; #fff;*/
+	'--link-color': '#03A9F4', /*#03A9F4;*/
+	'--accent-bg-color': '#03A9F4',
+	'--accent-color': '#fff', /*#fff;*/
+	'--inactive-link-color': '#757575' /*#fff; #757575;*/
+}
+
 const input = document.querySelector("#searchtext")
 const searchbtn = document.querySelector("#searchbtn")
 const reset = document.querySelector("#resetbtn")
@@ -62,11 +107,18 @@ const bottom = document.querySelector('.bottom')
 const nav = document.querySelector('.nav')
 const footer = document.querySelector('footer')
 const hamburger = document.querySelector('.hamburger')
-const left = document.querySelector('.left')
+const leftNav = document.querySelector('.leftNav')
+const profileLeft = document.querySelector('.profileLeft')
+const routers = document.querySelectorAll('router')
+const routeDiv = document.querySelector('route')
+const home = document.querySelector('.home')
+const html = document.querySelector('html')
+const contextMenu = document.querySelector('#contextMenu')
+
 const localBooksUrl = '/books'
 const booksUrl = '/books/search'
 let slide = false
-let bookStore, listStore, onlineBookStore, currentList, top, bottomToolBar
+let bookStore, listStore, onlineBookStore, userStore, currentList, top, bottomToolBar
 
 input.addEventListener('input', inputHandler)
 input.addEventListener('keyup', (event) => {
@@ -85,19 +137,50 @@ bottom.addEventListener('click', (e) => {
 hamburger.addEventListener('click', (e) => {
 	e.preventDefault()
 
-	if (left.style.left !== '0px') {
-		left.style.left = '0px'
-		left.classList.add('slideOpen')
+	if (leftNav.style.left !== '0px') {
+		leftNav.style.left = '0px'
+		leftNav.classList.add('slideOpen')
 	} else {
-		left.style.left = '-250px'
-		left.classList.remove('slideOpen')
+		leftNav.style.left = '-250px'
+		leftNav.classList.remove('slideOpen')
 	}
 	
 })
 
-// left.addEventListener('animationed', (e) => {
-// 	if (left.style.left = '-250px') {
-// 		left.classList.remove('slideOpen')
+Object.keys(routers).forEach((key) => {
+
+	routers[key].addEventListener('click', () => {
+		let children = routers[key].children
+		let child 
+		Object.keys(children).forEach((key) => {
+			if (children[key].tagName == 'A') {
+				child = children[key]
+			}
+		})
+		
+		if (!child) {
+			child = routers[key].firstChild
+			children = child.children
+			Object.keys(children).forEach((key) => {
+				if (children[key].tagName == 'A') {
+					child = children[key]
+				}
+			})
+		}
+
+		console.log('Current path: ' + child.getAttribute('href'))
+		let currentPath = child.getAttribute('href')
+
+		route(currentPath)
+	})
+	
+})
+
+
+
+// leftNav.addEventListener('animationed', (e) => {
+// 	if (leftNav.style.left = '-250px') {
+// 		leftNav.classList.remove('slideOpen')
 // 	}
 // })
 
@@ -115,11 +198,24 @@ const list = new List('list', [{
 	'name': 'list'
 }])
 
+const user = new User('user', [{
+	'name': 'username'
+}, {
+	'name': 'fullname'
+}])
+
 document.onload = start()
 
 function start() {
 	console.log('Document load')
 
+	console.log(window.location.hash)
+
+	setTheme(darkTheme)
+
+	let hash = '/' + window.location.hash
+
+	route(hash)
 	slide = true
 	currentList = 'All'
 	bookStore = new Store(book, {
@@ -140,12 +236,31 @@ function start() {
 		totalProperty: 'count'
 	})
 
+	userStore = new Store(user, {
+		url: '/users',
+		rootProperty: 'data',
+		totalProperty: 'count'
+	})
+
 	listStore.load({
 		params: {}, 
 		callback: listStoreLoadHandler
 	})
 
+	userStore.load({
+		callback: profileStoreHandler
+	})
+
 	loadPage()
+}
+
+function setTheme(theme) {
+	Object.keys(theme).forEach(key => {
+		html.style.setProperty(key, theme[key])
+	})
+}
+
+function changeTheme() {
 }
 
 function inputHandler(v) {
@@ -180,8 +295,8 @@ function listclickHandler(e) {
 	Object.keys(links).forEach(x => links[x].classList.remove('activeLink'))
 
 	e.target.classList.add('activeLink')
-	left.style.left = '-250px'
-	left.classList.remove('slideOpen')
+	leftNav.style.left = '-250px'
+	leftNav.classList.remove('slideOpen')
 
 	currentList = value
 
@@ -364,6 +479,13 @@ function listStoreLoadHandler (err, data)  {
 	fillListData(data)
 }
 
+function profileStoreHandler (err, data) {
+	if (err) {
+		console.log(err)
+	}
+	fillProfileData(data)
+}
+
 function fillBookData(data) {
 
 	//clear existing list before repopulating
@@ -425,24 +547,90 @@ function fillBookData(data) {
 
 function fillListData(data) {
 	let listElem = document.getElementById('lists')
+	const contextMenu = document.querySelector('#contextMenu')
 
+	const h3 = document.createElement('h3')
+	h3.innerHTML = 'Lists'
+	contextMenu.appendChild(h3)
 	//clear existing list before repopulating
 	listElem.textContent = ''
 
-	let tmpl = document.getElementById('list-template').content.cloneNode(true)
-	tmpl.querySelector('#list-name').innerText = 'All'
-	tmpl.querySelector('#list-name').setAttribute('value', 'All')
-	tmpl.querySelector('#list-name').setAttribute('class', 'activeLink')
-	tmpl.querySelector('#list-name').addEventListener('click', listclickHandler)
-	listElem.appendChild(tmpl)
+	let tmpl1 = document.getElementById('list-template').content.cloneNode(true)
+	let tmpl2 = document.getElementById('list-template').content.cloneNode(true)
+
+	tmpl1.querySelector('#list-name').innerText = 'All'
+	tmpl2.querySelector('#list-name').innerText = 'All'
+
+	tmpl1.querySelector('#list-name').setAttribute('value', 'All')
+	tmpl2.querySelector('#list-name').setAttribute('value', 'All')
+
+	tmpl1.querySelector('#list-name').setAttribute('class', 'activeLink')
+	tmpl2.querySelector('#list-name').setAttribute('class', 'activeLink')
+
+	tmpl1.querySelector('#list-name').addEventListener('click', listclickHandler)
+	tmpl2.querySelector('#list-name').addEventListener('click', listclickHandler)
+
+	listElem.appendChild(tmpl1)
+	contextMenu.appendChild(tmpl2)
 
 	data.forEach((el) => {
-		let tmpl = document.getElementById('list-template').content.cloneNode(true)
-		tmpl.querySelector('#list-name').innerText = el.name
-		tmpl.querySelector('#list-name').setAttribute('value', el.name)
-		tmpl.querySelector('#list-name').addEventListener('click', listclickHandler)
+		let tmpl1 = document.getElementById('list-template').content.cloneNode(true)
+		tmpl1.querySelector('#list-name').innerText = el.name
+		tmpl1.querySelector('#list-name').setAttribute('value', el.name)
+		tmpl1.querySelector('#list-name').addEventListener('click', listclickHandler)
 
-	  	listElem.appendChild(tmpl)
+	let tmpl2 = document.getElementById('list-template').content.cloneNode(true)
+		tmpl2.querySelector('#list-name').innerText = el.name
+		tmpl2.querySelector('#list-name').setAttribute('value', el.name)
+		tmpl2.querySelector('#list-name').addEventListener('click', listclickHandler)
+
+	  	listElem.appendChild(tmpl1)
+	  	contextMenu.appendChild(tmpl2)
 	})
 	
+}
+
+function fillProfileData(user) {
+
+	const profileElem = document.getElementById('profile')
+	//clear existing list before repopulating
+	profileElem.textContent = ''
+
+	const tmpl = document.getElementById('profile-template').content.cloneNode(true)
+	tmpl.querySelector('#profile-fullname').innerText = user.fullname
+	tmpl.querySelector('#profile-username').innerText = user.username
+	tmpl.querySelector('#profile-darktheme').addEventListener('change', (e) => {
+		const check = e.target.checked
+		if (check) {
+			setTheme(darkTheme)
+		} else {
+			setTheme(lightTheme)
+		}
+	})
+	profileElem.appendChild(tmpl)
+}
+
+function route(currentPath) {
+	// currentPath = '/' + currentPath
+	const children = routeDiv.childNodes
+
+	if (currentPath !== '/#' && currentPath !== '/') {
+		if (contextMenu) {
+			contextMenu.style.display = 'none'
+		} 
+	} else {
+		if (contextMenu) {
+			contextMenu.style.display = 'block'
+		}
+	}
+
+	Object.keys(children).forEach((key) => {
+		if (children[key].tagName == 'DIV') {
+			if (children[key].getAttribute('routeId') == currentPath || children[key].getAttribute('routeId') + '#' == currentPath) {
+				children[key].classList.remove('hidden')
+			} else {
+				children[key].classList.add('hidden')
+			}
+		}	
+	})
 }

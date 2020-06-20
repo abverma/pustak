@@ -1,6 +1,6 @@
 const dbManager = require('../db')
 const {log, error} = require('../customLogger')
-const User = require('../models/user')
+const User = require('../models/users')
 
 exports.activateUser = (req, res) => {
 	let {u: username, c: activationCode} = req.query

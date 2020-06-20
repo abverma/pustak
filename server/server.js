@@ -17,6 +17,7 @@ const books = require('./routes/books')
 const login = require('./routes/login')
 const signup = require('./routes/signup')
 const lists = require('./routes/lists')
+const users = require('./routes/users')
 const activator = require('./util/activator')
 
 //constants
@@ -83,6 +84,7 @@ function addRoutes() {
 	app.use('/login', login)
 	app.use('/books', isLoggedIn, books)
 	app.use('/lists', isLoggedIn, lists)
+	app.use('/users', isLoggedIn, users)
 	app.use(express.static(publicDir))
 	app.use(express.static(clientDir))
 	app.use(function (err, req, res, next) {
