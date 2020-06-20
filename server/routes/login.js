@@ -6,6 +6,10 @@ router.get('/', (req, res) => {
 	res.render('login')
 })
 
+router.get('/twitter',
+  passport.authenticate('twitter')
+)
+
 router.post('/',
   passport.authenticate('local', { 
   	successRedirect: '/',

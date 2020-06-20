@@ -39,3 +39,28 @@ exports.update = (id, updateObj) => {
 
 	return db.collection('users').updateOne({_id: ObjectID(id)}, {$set: updateObj})
 }
+
+exports.findOrCreate = (query, newuser) => {
+  	const db = dbManager.getDb()
+
+  	return new Promise((resolve, reject) => {
+  		db.collection('users').findOne(query)
+		.then(async (user) => {
+			if (!user) {
+				await db.collection('users').insertOne(Object.assign({
+					creation_date: new Date(),
+					invitation_date: new Date(),
+					verified: true
+				}, newuser))
+
+				resolve(db.collection('users').findOne(newuser))
+			} else {
+				resolve(user)
+			}
+		})
+		.catch(err => {
+			reject(err)
+		})
+  	})
+	
+}

@@ -79,6 +79,12 @@ function addRoutes() {
 	app.get('/', isLoggedIn, (req, res) => {
 		res.sendFile(path.join(clientDir, 'index.html'))
 	})
+	app.get('/oauth/twitter/callback',
+		passport.authenticate('twitter', { failureRedirect: '/login' }),
+		(req, res) => {
+			res.redirect('/')
+	  	})
+
 	app.get('/activate', activator.activateUser)
 	app.use('/signup', signup)
 	app.use('/login', login)

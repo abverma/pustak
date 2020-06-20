@@ -161,6 +161,19 @@ footer {
 	line-height: 1.5;
 }
 
+.other {
+	margin-bottom: 20px;
+}
+.twitter{
+	background: #1da1f2;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	text-decoration: none;
+	color: var(--accent-color);
+	padding: 10px;
+}
+
 @media only screen and (min-width: 768px) {
 	
 	.nav h2 {
@@ -172,7 +185,7 @@ footer {
 	}
 
 	form {
-		top: 20%;
+		top: 10%;
 		width: 30vw;
 		margin: 20px auto;
 	}

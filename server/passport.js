@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('./models/users')
 const {logger, log, error} = require('./customLogger')
 const bcrypt = require('bcrypt')
@@ -39,6 +40,29 @@ passport.use(new LocalStrategy((username, password, done) => {
 	})
 	
 }))
+
+passport.use(new TwitterStrategy({
+    consumerKey: process.env.TWITTER_API_KEY,
+    consumerSecret: process.env.TWITTER_SECRET,
+    callbackURL: '/oauth/twitter/callback'
+  },
+  function(token, tokenSecret, profile, cb) {
+ 
+    User.findOrCreate({ 
+    	twitterId: profile.id 
+    }, {
+    	twitterId: profile.id,
+    	fullname: profile.displayName,
+    	username: profile.username
+    })
+    .then((user) => {
+      return cb(null, user)
+    })
+    .catch((err) => {
+    	return cb(err, false)
+    })
+
+  }))
 
 passport.serializeUser(function(user, done) {
 	done(null, user._id)
