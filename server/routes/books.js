@@ -43,16 +43,19 @@ router.get('/search', (req, res) => {
 			let books = result.GoodreadsResponse.search[0].results[0].work
 			let resdata = []
 
-			books.forEach((data) => {
-				let book = {}
-				book['goodread_id'] = data.best_book[0].id._
-				book['title'] = data.best_book[0].title[0]
-				book['author'] = data.best_book[0].author[0].name[0]
-				book['average_rating'] = data.average_rating
-				book['image_url'] = data.best_book[0].image_url
-				book['small_image_url'] = data.best_book[0].small_image_url
-				resdata.push(book)
-			})
+			if (books && books.length) {
+				books.forEach((data) => {
+					let book = {}
+					book['goodread_id'] = data.best_book[0].id._
+					book['title'] = data.best_book[0].title[0]
+					book['author'] = data.best_book[0].author[0].name[0]
+					book['average_rating'] = data.average_rating
+					book['image_url'] = data.best_book[0].image_url
+					book['small_image_url'] = data.best_book[0].small_image_url
+					resdata.push(book)
+				})
+			}
+			
 			res.send({
 				success: true,
 				data: resdata,

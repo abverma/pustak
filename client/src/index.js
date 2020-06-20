@@ -463,9 +463,11 @@ function bookStoreLoadHandler (err, data, count, currentPage)  {
 				disableAnchor(previous, false)
 				previous.addEventListener('click', loadPreviousPage)
 			}
+
+
 		}
 	} else {
-		total.innerHTML = ''
+		total.innerHTML = 'Could not find the book on goodreads.'
 	}
 
 	fillBookData(data)
@@ -492,6 +494,10 @@ function fillBookData(data) {
 	resultElem.textContent = ''
 	
 	let bottomToolBarNode = document.getElementById('bottomToolBarTemplate').content.cloneNode(true)
+
+	if (!data) {
+		return 
+	}
 
 	data.forEach((el) => {
 
