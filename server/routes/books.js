@@ -45,17 +45,18 @@ router.get('/search', (req, res) => {
 
 			if (books && books.length) {
 				books.forEach((data) => {
+					console.log(data)
 					let book = {}
-					book['goodread_id'] = data.best_book[0].id._
+					book['goodread_id'] = data.best_book[0].id ? (Array.isArray(data.best_book[0].id) ? data.best_book[0].id[0]._ : data.best_book[0].id._) : null
 					book['title'] = data.best_book[0].title[0]
 					book['author'] = data.best_book[0].author[0].name[0]
-					book['average_rating'] = data.average_rating
+					book['average_rating'] = data.average_rating ? (Array.isArray(data.average_rating) ? data.average_rating[0] : data.average_rating) : null
 					book['image_url'] = data.best_book[0].image_url
 					book['small_image_url'] = data.best_book[0].small_image_url
 					resdata.push(book)
 				})
 			}
-			
+
 			res.send({
 				success: true,
 				data: resdata,
