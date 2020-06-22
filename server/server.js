@@ -84,6 +84,12 @@ function addRoutes() {
 		(req, res) => {
 			res.redirect('/')
 	  	})
+	app.get('/oauth/facebook/callback',
+		passport.authenticate('facebook', { failureRedirect: '/login' }),
+			(req, res) => {
+			// Successful authentication, redirect home.
+			res.redirect('/')
+		})
 
 	app.get('/activate', activator.activateUser)
 	app.use('/signup', signup)

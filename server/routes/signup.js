@@ -53,10 +53,12 @@ router.post('/', [
 			verified: false
 		}, req.body)
 
+		newUser.username = newUser.username.toLowerCase()
+		delete newUser.confirmPassword
 		console.log(newUser)
 
 		User.find({
-			username
+			username: username.toLowerCase()
 		})
 		.then((user) => {
 			if (user) {

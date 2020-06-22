@@ -10,6 +10,10 @@ router.get('/twitter',
   passport.authenticate('twitter')
 )
 
+router.get('/facebook',
+  passport.authenticate('facebook')
+)
+
 router.post('/',
   passport.authenticate('local', { 
   	successRedirect: '/',
