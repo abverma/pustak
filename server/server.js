@@ -94,6 +94,9 @@ function addRoutes() {
 	app.get('/activate', activator.activateUser)
 	app.use('/signup', signup)
 	app.use('/login', login)
+	app.use('/about', (req, res) => {
+		res.render('about')
+	})
 	app.use('/books', isLoggedIn, books)
 	app.use('/lists', isLoggedIn, lists)
 	app.use('/users', isLoggedIn, users)

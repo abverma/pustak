@@ -1,23 +1,22 @@
 <form method="POST" action="/login">
-		<h3> Please Log in </h3>
-		{{#if messages.error}}
-		<div class="error">
-		    <p>{{ messages.error }}</p>
-		</div>
-		{{/if}}
+	{{#if messages.error}}
+	<div class="error">
+		<p>{{ messages.error }}</p>
+	</div>
+	{{/if}}
 
-		{{#if messages.info}}
-		<div class="success">
-		    <p>{{ messages.info }}</p>
-		</div>
-		{{/if}}
-		<p class="other">
-			<a class="twitter" href="/login/twitter/">Login with Twitter</a>
-		</p>
-		or
-		<input type="text" name="username" placeholder="Email">
-		<input type="password" name="password" placeholder="Password">
-		<input type='submit' name="submit" value="Log In" />	
-		<span>Not a user? <a href="/signup">Signup</a></span>
+	{{#if messages.info}}
+	<div class="success">
+		<p>{{ messages.info }}</p>
+	</div>
+	{{/if}}
+	<p class="other">
+		<a class="twitter" href="/login/twitter/">Login with Twitter</a>
+	</p>
+	or
+
+	<input type="text" name="username" placeholder="Email">
+	<input type="password" name="password" placeholder="Password">
+	<input type='submit' name="submit" value="Log In" />
+	<span>Not a user? <a href="/signup">Signup</a></span>
 </form>
-

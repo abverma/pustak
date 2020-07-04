@@ -306,6 +306,26 @@ footer {
 	display: none;
 }
 
+footer ul {
+	display: inline;
+}
+
+footer li {
+	display: inline-block;
+	list-style: none;
+	padding: 0 10px;
+}
+
+footer a {
+	color: var(--accent-color);
+	text-decoration: none;
+}
+
+footer a:hover {
+	color: var(--main-bg-color);
+	text-decoration-line: blink;
+}
+
 .actions {
 	margin: 10px 0;
 }

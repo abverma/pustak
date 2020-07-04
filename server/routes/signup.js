@@ -76,14 +76,12 @@ router.post('/', [
 				log(result.ops)
 				mailer.sendSignupNotification(newUser)
 				mailer.sendActivationMail(newUser, req)
+				req.flash('info', 'User created. \nA verification mail has been sent to you.')
+				res.redirect('/login')
 			} else {
 				req.flash('info', 'User already exists')
 				res.redirect('/signup')
 			}
-		})
-		.then(() => {
-			req.flash('info', 'User created. \nA verification mail has been sent to you.')
-			res.redirect('/login')
 		})
 		.catch((err) => {
 			error(err)

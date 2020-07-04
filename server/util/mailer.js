@@ -31,7 +31,7 @@ exports.sendActivationMail = (user, req) => {
   const text = prelink + hostString + postLink
 
   sendMail({
-    from: 'admin@qitaab.com',
+    from: 'qitaab@tutanota.com',
     to: user.username,
     subject: 'Qitaab Account Activation',
     text: text
@@ -40,7 +40,7 @@ exports.sendActivationMail = (user, req) => {
 
 exports.sendSignupNotification = (user) => {
 
-  const from = 'admin@qitaab.com'
+  const from = 'qitaab@tutanota.com'
   const to = 'abverma@protonmail.com'
   const subject = 'Qitaab Signup Notification'
   const text = user.username + ' has signed up to the app. \n \n Thanks \n Qitaab Team'

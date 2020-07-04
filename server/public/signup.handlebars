@@ -1,33 +1,31 @@
 <form method="POST" action="/signup">
-		<h3> Please Sign up </h3>
-		{{#if messages.error}}
-		<div class="error">
-		    <p>{{ messages.error }}</p>
-		</div>
-		{{/if}}
+	{{#if messages.error}}
+	<div class="error">
+		<p>{{ messages.error }}</p>
+	</div>
+	{{/if}}
 
-		{{#if messages.info}}
-		<div class="success">
-		    <p>{{ messages.info }}</p>
-		</div>
-		{{/if}}
-		<p class="other">
-			<a class="twitter" href="/login/twitter/">Signup with Twitter</a>
-		</p>
-		or		
-		<input type="text" name="username" placeholder="Email" required>
-		<input type="text" name="fullname" placeholder="Full Name">
-		<input type="password" name="password" placeholder="Password">
-		<input type="password" name="confirmPassword" placeholder="Confirm Password">
-		<input type='submit' name="submit" value="Sign Up" />	
-		<span>Already a user? <a href="/login">Login</a></span>
+	{{#if messages.info}}
+	<div class="success">
+		<p>{{ messages.info }}</p>
+	</div>
+	{{/if}}
+	<p class="other">
+		<a class="twitter" href="/login/twitter/">Signup with Twitter</a>
+	</p>
+	or
+	<input type="text" name="username" placeholder="Email" required>
+	<input type="text" name="fullname" placeholder="Full Name">
+	<input type="password" name="password" placeholder="Password">
+	<input type="password" name="confirmPassword" placeholder="Confirm Password">
+	<input type='submit' name="submit" value="Sign Up" />
+	<span>Already a user? <a href="/login">Login</a></span>
 
-		{{#if errors}}
-		<div class="error">
-			{{#each errors}}
-		    <p>{{ this.msg }}</p>
-			{{/each}}
-		</div>
-		{{/if}}
+	{{#if errors}}
+	<div class="error">
+		{{#each errors}}
+		<p>{{ this.msg }}</p>
+		{{/each}}
+	</div>
+	{{/if}}
 </form>
-
