@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "installDep": "npm install",
-    "test": "mocha --timeout 10000"
+    "test": "NODE_ENV=test mocha --timeout 30000"
   },
   "author": "Simon Goback",
   "license": "ISC",

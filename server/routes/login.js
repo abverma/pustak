@@ -7,19 +7,26 @@ router.get('/', (req, res) => {
 })
 
 router.get('/twitter',
-  passport.authenticate('twitter')
+	passport.authenticate('twitter')
 )
 
 router.get('/facebook',
-  passport.authenticate('facebook')
+	passport.authenticate('facebook')
 )
 
 router.post('/',
-  passport.authenticate('local', { 
-  	successRedirect: '/',
-  	failureRedirect: '/login',
-  	failureFlash: true
-  })
+	passport.authenticate('local', { 
+		successRedirect: '/',
+		failureRedirect: '/login',
+		failureFlash: true
+	})
 )
+
+router.post('/session',
+	passport.authenticate('local', { 
+		failureRedirect: '/login',
+	}), (req, res) => {
+		res.send('ok')
+	})
 
 module.exports = router
