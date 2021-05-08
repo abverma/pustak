@@ -20,9 +20,9 @@ passport.use(new LocalStrategy((username, password, done) => {
 			return done(null, false, {message: 'User not found'})
 		}
 
-		if (!myuser.verified) {
-			return done(null, false, {message: 'User not verifed. Please check verification email sent to you.'})
-		}
+		// if (!myuser.verified) {
+		// 	return done(null, false, {message: 'User not verifed. Please check verification email sent to you.'})
+		// }
 		
 		bcrypt.compare(password, myuser.password)
 		.then(function(result) {

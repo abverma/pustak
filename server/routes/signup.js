@@ -74,8 +74,8 @@ router.post('/', [
 			if (result) {
 				log('User created')
 				log(result.ops)
-				mailer.sendSignupNotification(newUser)
-				mailer.sendActivationMail(newUser, req)
+				// mailer.sendSignupNotification(newUser)
+				// mailer.sendActivationMail(newUser, req)
 				req.flash('info', 'User created. \nA verification mail has been sent to you.')
 				res.redirect('/login')
 			} else {

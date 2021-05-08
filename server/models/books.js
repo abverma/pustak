@@ -24,6 +24,8 @@ exports.find = (query, start, limit) => {
 	},
 	{
 		'$sort': {
+			'date_added': -1,
+			'date_read': -1,
 			'last_update_date': -1,
 			'creation_date': -1
 		}
